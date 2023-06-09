@@ -28,9 +28,9 @@ options_age = ['18-30', '31-50', 'Over 51', 'Unknown', 'Under 18']
 # hour of the day: range of 0 to 23
 
 options_types_collision = ['Vehicle with vehicle collision','Collision with roadside objects',
-              'Collision with pedestrians','Rollover','Collision with animals',
-              'Unknown','Collision with roadside-parked vehicles','Fall from vehicles',
-              'Other','With Train']
+              'Collision with roadside-parked vehicles','Collision with pedestrians','Rollover',
+              'Collision with animals','Fall from vehicles',
+              'Other','With Train','Unknown']
 
 options_sex = ['Male','Female','Unknown']
 
@@ -49,23 +49,31 @@ options_acc_area = ['Other', 'Office areas', 'Residential areas', ' Church areas
 features = ['Number_of_vehicles_involved','Number_of_casualties','Hour_of_Day','Type_of_collision','Age_band_of_driver','Sex_of_driver',
     'Educational_level','Service_year_of_vehicle','Day_of_week','Area_accident_occured']
 # Give a title to web app using html syntax
-st.markdown("<h1 style='text-align: center;'>Accident Severity Prediction App 🚧</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Crash Guard Pro 🚧</h1>", unsafe_allow_html=True)
 
 # define a main() function to take inputs from user in form based approach
 def main():
     with st.form("road_traffic_severity_form"):
        st.subheader("Please enter the following inputs:")
         
-       No_vehicles = st.slider("Number of vehicles involved:",1,7, value=0, format="%d")
-       No_casualties = st.slider("Number of casualties:",1,8, value=0, format="%d")
-       Hour = st.slider("Hour of the day:", 0, 23, value=0, format="%d")
+       No_vehicles = st.number_input("Vehicles involved in accident:",1,7, value=1, format="%g")
+       No_casualties = st.number_input("Casualties:",0,8, value=0, format="%d")
        collision = st.selectbox("Type of collision:",options=options_types_collision)
-       Age_band = st.selectbox("Driver age group?:", options=options_age)
-       Sex = st.selectbox("Sex of the driver:", options=options_sex)
-       Education = st.selectbox("Education of driver:",options=options_education_level)
-       service_vehicle = st.selectbox("Service year of vehicle:", options=options_services_year)
+       
+       # create another grid layout with 4 columns
+       col1, col2 = st.columns(2)
+
+       with col1:
+          Age_band = st.selectbox("Driver age group?:", options=options_age)
+       with col2:
+          Sex = st.selectbox("Sex of the driver:", options=options_sex)
+
+       Hour = st.slider("Hour of the day:", 0, 23, value=0, format="%g")
        Day_week = st.selectbox("Day of the week:", options=options_day)
        Accident_area = st.selectbox("Area of accident:", options=options_acc_area)
+       Education = st.selectbox("Education of driver:",options=options_education_level)
+       service_vehicle = st.selectbox("Service year of vehicle:", options=options_services_year)
+       
         
        submit = st.form_submit_button("Predict")
 
@@ -86,27 +94,18 @@ def main():
        if prediction == 0:
            st.write(f"The severity prediction is fatal injury⚠")
        elif prediction == 1:
-           st.write(f"The severity prediction is serious injury")
+           st.write(f"The severity prediction is serious injury🚑")
        else:
-           st.write(f"The severity prediction is slight injury")
+           st.write(f"The severity prediction is slight injury🩹")
         
-       st.write("Developed By: Avi kumar Talaviya")
-       st.markdown("""Reach out to me on: [Twitter](https://twitter.com/avikumart_) |
-       [Linkedin](https://www.linkedin.com/in/avi-kumar-talaviya-739153147/) |
-       [Kaggle](https://www.kaggle.com/avikumart) 
-       """)
-
-a,b,c = st.columns([0.2,0.6,0.2])
-with b:
- st.image("banner-picture.jpeg", use_column_width=True)
-
+       st.write("Developed By: Kalan Barnes, Ivan Alvardo and Eric Samano")
 
 # description about the project and code files       
 st.subheader("🧾Description:")
-st.text("""This data set is collected from Addis Ababa Sub-city police departments for master's research work. 
+st.text("""This data set is collected from Addis Ababa Sub-city police departments. 
 The data set has been prepared from manual records of road traffic accidents of the year 2017-20. 
-All the sensitive information has been excluded during data encoding and finally it has 32 features and 12316 instances of the accident.
-Then it is preprocessed and for identification of major causes of the accident by analyzing it using different machine learning classification algorithms.
+AThis data includes 32 features and thousands of instances of accidents.
+The preprocessed and for identification of major causes of the accident by analyzing it using different machine learning classification algorithms.
 """)
 
 st.markdown("Source of the dataset: [Click Here](https://www.narcis.nl/dataset/RecordID/oai%3Aeasy.dans.knaw.nl%3Aeasy-dataset%3A191591)")
@@ -117,7 +116,7 @@ The task is to classify this variable based on the other 31 features step-by-ste
 The metric for evaluation will be f1-score
 """)
 
-st.markdown("Please find GitHub repository link of project: [Click Here](https://github.com/avikumart/Road-Traffic-Severity-Classification-Project)")          
+st.markdown("Please find GitHub repository link of project: [Click Here](https://github.com/bkalan32/CrashGuard-Pro.git)")          
   
 # run the main function        
 if __name__ == '__main__':
